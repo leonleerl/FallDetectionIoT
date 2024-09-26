@@ -12,6 +12,7 @@
         Topmost="True"
         WindowState="Maximized"
         WindowStartupLocation="CenterScreen">
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -21,37 +22,73 @@
             <ColumnDefinition Width="12*"/>
             <ColumnDefinition Width="20*"/>
         </Grid.ColumnDefinitions>
+
+        <!-- 顶部区域 -->
         <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Fill="#EEEEEE"/>
-        <Grid Grid.Row="1" Grid.Column="0">
-            <hc:SearchBar Width="380" Height="12" hc:InfoElement.TitleWidth="140" hc:InfoElement.Placeholder="Please input name" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="Name: " Style="{StaticResource SearchBarExtend}" hc:InfoElement.Necessary="True" VerticalAlignment="Top"/>
-            <DataGrid hc:DataGridAttach.CanUnselectAllWithBlankArea="True" HeadersVisibility="All" RowHeaderWidth="60" AutoGenerateColumns="False" ItemsSource="{Binding SensorData}">
-                <DataGrid.RowHeaderTemplate>
-                    <DataTemplate>
-                        <CheckBox IsChecked="False"/>
-                    </DataTemplate>
-                </DataGrid.RowHeaderTemplate>
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Name}" Header="Name"/>
-                    <DataGridTextColumn Binding="{Binding FallDate}" Header="Fall Dates"/>
-                </DataGrid.Columns>
-            </DataGrid>
-            <hc:Drawer Name="DrawerLeftInContainer" ShowMode="Push">
-                <Border Background="{DynamicResource RegionBrush}" Width="300" BorderBrush="{DynamicResource BorderBrush}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Margin="10,0,0,0" Text="Header" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Left"/>
-                        <Button Command="hc:ControlCommands.Close" Grid.Row="0" HorizontalAlignment="Right" Foreground="{DynamicResource PrimaryTextBrush}" Style="{StaticResource ButtonIcon}" hc:IconElement.Geometry="{StaticResource DeleteFillCircleGeometry}"/>
-                    </Grid>
-                </Border>
-            </hc:Drawer>
-        </Grid>
-        <gmap:GMapControl x:Name="gmapControl" 
-                          VerticalAlignment="Stretch" 
-                          HorizontalAlignment="Stretch" 
-                          Zoom="12" Grid.Row="1" Grid.Column="1"/>
-        
+
+        <!-- Drawer Toggle 按钮 -->
+        <Button Grid.Row="0" Grid.Column="1" Content="Click" Command="{Binding ToggleDrawerCommand}"/>
+
+        <!-- Drawer 容器 -->
+        <hc:DrawerContainer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid>
+                <hc:Drawer Name="DrawerLeftInContainer" Dock="Left" ShowMode="Push"
+                   IsOpen="{Binding IsDrawerOpen}" ShowMask="False" 
+                   Width="{Binding DrawerWidth}">
+                    <!-- 绑定 DrawerWidth 来控制宽度 -->
+                    <Border Background="{DynamicResource RegionBrush}" BorderBrush="{DynamicResource BorderBrush}" CornerRadius="20">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- 搜索栏 -->
+                            <hc:SearchBar Grid.Row="0" Grid.Column="0" Width="380" Height="12" Margin="20 15 0 15"
+                                          hc:InfoElement.TitleWidth="140" hc:InfoElement.Placeholder="Please input name"
+                                          hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="Name: "
+                                          Style="{StaticResource SearchBarExtend}"
+                                          VerticalAlignment="Top"/>
+
+                            <!-- 数据表格 -->
+                            <DataGrid Grid.Row="1" Grid.Column="0"  Margin="20 0 0 0" hc:DataGridAttach.CanUnselectAllWithBlankArea="True"
+                                      HeadersVisibility="All" RowHeaderWidth="60" AutoGenerateColumns="False"
+                                      ItemsSource="{Binding SensorData}">
+                                <DataGrid.RowHeaderTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="False"/>
+                                    </DataTemplate>
+                                </DataGrid.RowHeaderTemplate>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding Name}" Header="Name"/>
+                                    <DataGridTextColumn Binding="{Binding FallDate}" Header="Fall Dates"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <!-- 保证按钮在抽屉关闭时部分可见 -->
+                            <Button Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" 
+                                    Command="hc:ControlCommands.Close" 
+                                    Width="40" Height="40"
+                                    HorizontalAlignment="Right" 
+                                    VerticalAlignment="Center" 
+                                    Margin="0 0 -20 0" 
+                                Foreground="{DynamicResource PrimaryTextBrush}" 
+                                    Style="{StaticResource ButtonIcon}" 
+                                    hc:IconElement.Geometry="{StaticResource DeleteFillCircleGeometry}"/>
+                        </Grid>
+                    </Border>
+                </hc:Drawer>
+
+                <!-- 地图 -->
+                <gmap:GMapControl x:Name="gmapControl" 
+                                  VerticalAlignment="Stretch" 
+                                  HorizontalAlignment="Stretch" 
+                                  Zoom="12"/>
+            </Grid>
+        </hc:DrawerContainer>
     </Grid>
 </Window>
