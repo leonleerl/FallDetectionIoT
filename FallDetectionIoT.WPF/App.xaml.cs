@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Data;
 using System.Windows;
 using FallDetectionIoT.WPF.ViewModels;
+using FallDetectionIoT.WPF.Common;
 
 namespace FallDetectionIoT.WPF
 {
@@ -27,15 +28,17 @@ namespace FallDetectionIoT.WPF
 
         private void ConfigureServices(ServiceCollection services)
         {
-            // 注册 HttpClient
+            
             services.AddHttpClient<ISensorDataService, SensorDataService>(client =>
             {
                 client.BaseAddress = new Uri("http://localhost:5278");
             });
 
-            // 注册 ViewModel 和其他服务
+            
             services.AddSingleton<MainWindow>();
             services.AddSingleton<MainWindowViewModel>();
+
+            services.AddAutoMapper(typeof(MappingProfile));
         }
 
         protected override void OnStartup(StartupEventArgs e)

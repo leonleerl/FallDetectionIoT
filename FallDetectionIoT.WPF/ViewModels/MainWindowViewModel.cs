@@ -1,5 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using AutoMapper;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FallDetectionIoT.Shared.ModelDtos;
 using FallDetectionIoT.Shared.Models;
 using FallDetectionIoT.WPF.Services.Interfaces;
 using System.Collections.ObjectModel;
@@ -11,19 +13,22 @@ namespace FallDetectionIoT.WPF.ViewModels
     public partial class MainWindowViewModel : ObservableObject
     {
         private readonly ISensorDataService _sensorDataService;
+        private readonly IMapper _mapper;
 
-        public MainWindowViewModel(ISensorDataService sensorDataService)
+        public MainWindowViewModel(ISensorDataService sensorDataService, IMapper mapper)
         {
             _sensorDataService = sensorDataService;
+            _mapper = mapper;
             LoadSensorData();
         }
 
         private async void LoadSensorData()
         {
             var data = await _sensorDataService.GetAll();
-            foreach (var sensor in data)
+            foreach (var sensorDataModel in data)
             {
-                SensorData.Add(sensor);
+                var sensorDataDto = _mapper.Map<SensorDataModelDto>(sensorDataModel);
+                SensorData.Add(sensorDataDto);
             }
         }
 
@@ -37,6 +42,6 @@ namespace FallDetectionIoT.WPF.ViewModels
         }
 
         [ObservableProperty]
-        private ObservableCollection<SensorDataModel> _sensorData = new ObservableCollection<SensorDataModel>();
+        private ObservableCollection<SensorDataModelDto> _sensorData = new ObservableCollection<SensorDataModelDto>();
     }
 }

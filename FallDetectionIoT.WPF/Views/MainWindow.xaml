@@ -5,11 +5,53 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FallDetectionIoT.WPF"
         xmlns:vm="clr-namespace:FallDetectionIoT.WPF.ViewModels"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:gmap="clr-namespace:GMap.NET.WindowsPresentation;assembly=GMap.NET.WindowsPresentation"
         mc:Ignorable="d"
         Title="MainWindow" Height="850" Width="1400"
+        Topmost="True"
+        WindowState="Maximized"
         WindowStartupLocation="CenterScreen">
     <Grid>
-        <TextBlock Text="{Binding SensorName}"/>
-        <Button Content="Click" Command="{Binding ClickCommand}"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="12*"/>
+            <ColumnDefinition Width="20*"/>
+        </Grid.ColumnDefinitions>
+        <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Fill="#EEEEEE"/>
+        <Grid Grid.Row="1" Grid.Column="0">
+            <hc:SearchBar Width="380" Height="12" hc:InfoElement.TitleWidth="140" hc:InfoElement.Placeholder="Please input name" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="Name: " Style="{StaticResource SearchBarExtend}" hc:InfoElement.Necessary="True" VerticalAlignment="Top"/>
+            <DataGrid hc:DataGridAttach.CanUnselectAllWithBlankArea="True" HeadersVisibility="All" RowHeaderWidth="60" AutoGenerateColumns="False" ItemsSource="{Binding SensorData}">
+                <DataGrid.RowHeaderTemplate>
+                    <DataTemplate>
+                        <CheckBox IsChecked="False"/>
+                    </DataTemplate>
+                </DataGrid.RowHeaderTemplate>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Name}" Header="Name"/>
+                    <DataGridTextColumn Binding="{Binding FallDate}" Header="Fall Dates"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <hc:Drawer Name="DrawerLeftInContainer" ShowMode="Push">
+                <Border Background="{DynamicResource RegionBrush}" Width="300" BorderBrush="{DynamicResource BorderBrush}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Margin="10,0,0,0" Text="Header" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Left"/>
+                        <Button Command="hc:ControlCommands.Close" Grid.Row="0" HorizontalAlignment="Right" Foreground="{DynamicResource PrimaryTextBrush}" Style="{StaticResource ButtonIcon}" hc:IconElement.Geometry="{StaticResource DeleteFillCircleGeometry}"/>
+                    </Grid>
+                </Border>
+            </hc:Drawer>
+        </Grid>
+        <gmap:GMapControl x:Name="gmapControl" 
+                          VerticalAlignment="Stretch" 
+                          HorizontalAlignment="Stretch" 
+                          Zoom="12" Grid.Row="1" Grid.Column="1"/>
+        
     </Grid>
 </Window>
