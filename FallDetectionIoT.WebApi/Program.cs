@@ -1,4 +1,6 @@
 using FallDetectionIoT.WebApi.Data;
+using FallDetectionIoT.WebApi.Repositories.Interfaces;
+using FallDetectionIoT.WebApi.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<FallDetectionIoTDbContext>(configure => configure.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddScoped<ISensorDataRepository, SensorDataRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

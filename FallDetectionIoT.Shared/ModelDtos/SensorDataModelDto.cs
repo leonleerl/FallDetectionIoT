@@ -10,9 +10,7 @@ namespace FallDetectionIoT.Shared.ModelDtos
 {
     public class SensorDataModelDto
     {
-        public Guid Id { get; set; }
         public string? Name { get; set; }
-        public DateTime FallDate { get; set; }
         public string? Longitude { get; set; }
         public string? Latitude { get; set; }
         public string? accelX { get; set; }
