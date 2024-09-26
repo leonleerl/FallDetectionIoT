@@ -1,8 +1,7 @@
 ﻿<Application x:Class="FallDetectionIoT.WPF.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:FallDetectionIoT.WPF"
-             StartupUri="Views/MainWindow.xaml">
+             xmlns:local="clr-namespace:FallDetectionIoT.WPF">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

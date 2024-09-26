@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using FallDetectionIoT.WPF.ViewModels;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,9 +17,10 @@ namespace FallDetectionIoT.WPF.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(MainWindowViewModel mainWindowViewModel)
         {
             InitializeComponent();
+            this.DataContext = mainWindowViewModel;
         }
     }
 }
