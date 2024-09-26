@@ -27,7 +27,7 @@ namespace FallDetectionIoT.WPF.Views
 
             // 初始化 GMap 控件
             gmapControl.MapProvider = GoogleMapProvider.Instance;
-            gmapControl.Position = new PointLatLng(-31.9505, 115.8605); // 默认位置: 例如，珀斯
+            gmapControl.Position = new PointLatLng(-31.9505, 115.8605);
             gmapControl.MinZoom = 1;
             gmapControl.MaxZoom = 20;
             gmapControl.Zoom = 12;

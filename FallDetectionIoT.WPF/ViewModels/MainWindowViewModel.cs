@@ -32,13 +32,28 @@ namespace FallDetectionIoT.WPF.ViewModels
             }
         }
 
-        [ObservableProperty]
-        private string _sensorName = "Yes";
 
+        // 控制抽屉的打开状态
+        [ObservableProperty]
+        private bool _isDrawerOpen = true;
+
+        // 抽屉的宽度，默认展开时为 500，收起时为 60
+        [ObservableProperty]
+        private string _drawerWidth = "500";
+
+        // 切换抽屉状态
         [RelayCommand]
-        public void Click()
+        private void ToggleDrawer()
         {
-            MessageBox.Show("Hello");
+            if (IsDrawerOpen)
+            {
+                DrawerWidth = "160"; // 抽屉收起时保留一部分按钮
+            }
+            else
+            {
+                DrawerWidth = "500"; // 抽屉完全展开
+            }
+            IsDrawerOpen = !IsDrawerOpen;
         }
 
         [ObservableProperty]
