@@ -20,10 +20,15 @@ namespace FallDetectionIoT.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetSensorData()
         {
-            // 等待异步任务完成并获取结果
             var results = await _sensorDataRepository.GetAll();
 
-            // 返回从数据库获取的结果
+            return Ok(results);
+        }
+
+        [HttpGet("name")]
+        public async Task<IActionResult> GetSensorData(string name)
+        {
+            var results = await _sensorDataRepository.GetAllByName(name);
             return Ok(results);
         }
 

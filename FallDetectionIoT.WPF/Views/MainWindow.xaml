@@ -23,19 +23,18 @@
             <ColumnDefinition Width="20*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- 顶部区域 -->
+        
         <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Fill="#EEEEEE"/>
 
-        <!-- Drawer Toggle 按钮 -->
+      
         <Button Grid.Row="0" Grid.Column="1" Content="Click" Command="{Binding ToggleDrawerCommand}"/>
 
-        <!-- Drawer 容器 -->
+       
         <hc:DrawerContainer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
             <Grid>
                 <hc:Drawer Name="DrawerLeftInContainer" Dock="Left" ShowMode="Push"
                    IsOpen="{Binding IsDrawerOpen}" ShowMask="False" 
                    Width="{Binding DrawerWidth}">
-                    <!-- 绑定 DrawerWidth 来控制宽度 -->
                     <Border Background="{DynamicResource RegionBrush}" BorderBrush="{DynamicResource BorderBrush}" CornerRadius="20">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -47,14 +46,13 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
-                            <!-- 搜索栏 -->
                             <hc:SearchBar Grid.Row="0" Grid.Column="0" Width="380" Height="12" Margin="20 15 0 15"
                                           hc:InfoElement.TitleWidth="140" hc:InfoElement.Placeholder="Please input name"
                                           hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="Name: "
                                           Style="{StaticResource SearchBarExtend}"
-                                          VerticalAlignment="Top"/>
+                                          VerticalAlignment="Top" Text="{Binding SearchContent}"
+                                          Command="{Binding SearchCommand}"/>
 
-                            <!-- 数据表格 -->
                             <DataGrid Grid.Row="1" Grid.Column="0"  Margin="20 0 0 0" hc:DataGridAttach.CanUnselectAllWithBlankArea="True"
                                       HeadersVisibility="All" RowHeaderWidth="60" AutoGenerateColumns="False"
                                       ItemsSource="{Binding SensorData}">
@@ -69,7 +67,7 @@
                                 </DataGrid.Columns>
                             </DataGrid>
 
-                            <!-- 保证按钮在抽屉关闭时部分可见 -->
+                          
                             <Button Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" 
                                     Command="hc:ControlCommands.Close" 
                                     Width="40" Height="40"
@@ -83,7 +81,6 @@
                     </Border>
                 </hc:Drawer>
 
-                <!-- 地图 -->
                 <gmap:GMapControl x:Name="gmapControl" 
                                   VerticalAlignment="Stretch" 
                                   HorizontalAlignment="Stretch" 

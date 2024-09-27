@@ -28,5 +28,10 @@ namespace FallDetectionIoT.WPF.Services
 
             return sensorData ?? Enumerable.Empty<SensorDataModel>();
         }
+
+        public Task<IEnumerable<SensorDataModel>> GetAllByName(string name)
+        {
+            return default!;
+        }
     }
 }
