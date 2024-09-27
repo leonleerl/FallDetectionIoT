@@ -25,7 +25,6 @@ namespace FallDetectionIoT.WPF.Views
             InitializeComponent();
             this.DataContext = mainWindowViewModel;
 
-            // 初始化 GMap 控件
             gmapControl.MapProvider = GoogleMapProvider.Instance;
             gmapControl.Position = new PointLatLng(-31.9505, 115.8605);
             gmapControl.MinZoom = 1;
@@ -34,12 +33,11 @@ namespace FallDetectionIoT.WPF.Views
             gmapControl.ShowCenter = false;
         }
 
-        // 在地图上添加标记
         private void AddMarker(double lat, double lng)
         {
             var marker = new GMapMarker(new PointLatLng(lat, lng))
             {
-                Shape = new System.Windows.Shapes.Ellipse
+                Shape = new Ellipse
                 {
                     Width = 10,
                     Height = 10,
@@ -52,7 +50,6 @@ namespace FallDetectionIoT.WPF.Views
             gmapControl.Markers.Add(marker);
         }
 
-        // 向地图发送坐标
         public void SendCoordinates(double latitude, double longitude)
         {
             gmapControl.Position = new PointLatLng(latitude, longitude);

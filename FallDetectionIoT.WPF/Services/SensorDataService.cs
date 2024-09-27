@@ -28,5 +28,20 @@ namespace FallDetectionIoT.WPF.Services
 
             return sensorData ?? Enumerable.Empty<SensorDataModel>();
         }
+
+        public async Task<IEnumerable<SensorDataModel>> GetAll(string name)
+        {
+            var response = await _httpClient.GetAsync("http://localhost:5278/api/FallDetection/"+name);
+            response.EnsureSuccessStatusCode();
+
+            var responseData = await response.Content.ReadAsStringAsync();
+
+            var sensorData = JsonSerializer.Deserialize<IEnumerable<SensorDataModel>>(responseData, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            return sensorData ?? Enumerable.Empty<SensorDataModel>();
+        }
     }
 }
