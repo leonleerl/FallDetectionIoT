@@ -10,6 +10,6 @@ namespace FallDetectionIoT.WPF.Services.Interfaces
     public interface ISensorDataService
     {
         Task<IEnumerable<SensorDataModel>> GetAll();
-        Task<IEnumerable<SensorDataModel>> GetAllByName(string name);
+        Task<IEnumerable<SensorDataModel>> GetAll(string name);
     }
 }

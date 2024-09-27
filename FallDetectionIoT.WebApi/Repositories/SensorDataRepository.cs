@@ -27,7 +27,7 @@ namespace FallDetectionIoT.WebApi.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<SensorDataModel>> GetAllByName(string name)
+        public async Task<IEnumerable<SensorDataModel>> GetAll(string name)
         {
             var results = await _context.SensorData.Where(p => p.Name.Contains(name)).ToListAsync();
             return results;

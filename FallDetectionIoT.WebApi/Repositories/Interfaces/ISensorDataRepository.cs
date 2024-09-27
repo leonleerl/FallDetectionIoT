@@ -7,6 +7,6 @@ namespace FallDetectionIoT.WebApi.Repositories.Interfaces
     {
         Task<IEnumerable<SensorDataModel>> GetAll();
         Task<int> Add(SensorDataModel sensorDataModel);
-        Task<IEnumerable<SensorDataModel>> GetAllByName(string name);
+        Task<IEnumerable<SensorDataModel>> GetAll(string name);
     }
 }

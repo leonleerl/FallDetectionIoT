@@ -47,9 +47,15 @@ namespace FallDetectionIoT.WPF.ViewModels
         }
 
         [RelayCommand]
-        private void Search()
+        private async Task Search()
         {
-           
+            var results = await _sensorDataService.GetAll(SearchContent);
+            SensorData.Clear();
+            foreach (var sensorDataModel in results)
+            {
+                var sensorDataDto = _mapper.Map<SensorDataModelDto>(sensorDataModel);
+                SensorData.Add(sensorDataDto);
+            }
         }
 
         [ObservableProperty]

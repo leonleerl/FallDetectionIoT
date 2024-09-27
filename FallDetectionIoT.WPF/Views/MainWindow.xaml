@@ -46,9 +46,8 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
-                            <hc:SearchBar Grid.Row="0" Grid.Column="0" Width="380" Height="12" Margin="20 15 0 15"
-                                          hc:InfoElement.TitleWidth="140" hc:InfoElement.Placeholder="Please input name"
-                                          hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="Name: "
+                            <hc:SearchBar Grid.Row="0" Grid.Column="0" Width="380" Height="12" Margin="20 15 0 15" hc:InfoElement.Placeholder="Please input name"
+                                          hc:InfoElement.TitlePlacement="Left" 
                                           Style="{StaticResource SearchBarExtend}"
                                           VerticalAlignment="Top" Text="{Binding SearchContent}"
                                           Command="{Binding SearchCommand}"/>
