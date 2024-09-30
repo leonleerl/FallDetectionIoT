@@ -17,5 +17,6 @@ namespace FallDetectionIoT.Shared.ModelDtos
         public string? accelX { get; set; }
         public string? accelY { get; set; }
         public string? accelZ { get; set; }
+        public bool IsChecked { get; set; }
     }
 }

@@ -23,18 +23,19 @@
             <ColumnDefinition Width="20*"/>
         </Grid.ColumnDefinitions>
 
-        
+
         <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Fill="#EEEEEE"/>
 
-      
+
         <Button Grid.Row="0" Grid.Column="1" Content="Click" Command="{Binding ToggleDrawerCommand}"/>
 
-       
+
         <hc:DrawerContainer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
             <Grid>
                 <hc:Drawer Name="DrawerLeftInContainer" Dock="Left" ShowMode="Push"
                    IsOpen="{Binding IsDrawerOpen}" ShowMask="False" 
-                   Width="{Binding DrawerWidth}">
+                   Width="{Binding DrawerWidth}"
+                           >
                     <Border Background="{DynamicResource RegionBrush}" BorderBrush="{DynamicResource BorderBrush}" CornerRadius="20">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -57,7 +58,9 @@
                                       ItemsSource="{Binding SensorData}">
                                 <DataGrid.RowHeaderTemplate>
                                     <DataTemplate>
-                                        <CheckBox IsChecked="False"/>
+                                        <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" 
+                                                Command="{Binding DataContext.CheckboxChangedCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" 
+                                            CommandParameter="{Binding}"/>
                                     </DataTemplate>
                                 </DataGrid.RowHeaderTemplate>
                                 <DataGrid.Columns>
@@ -66,8 +69,8 @@
                                 </DataGrid.Columns>
                             </DataGrid>
 
-                          
-                            <Button Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" 
+
+                            <!--<Button Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" 
                                     Command="hc:ControlCommands.Close" 
                                     Width="40" Height="40"
                                     HorizontalAlignment="Right" 
@@ -75,7 +78,12 @@
                                     Margin="0 0 -20 0" 
                                 Foreground="{DynamicResource PrimaryTextBrush}" 
                                     Style="{StaticResource ButtonIcon}" 
-                                    hc:IconElement.Geometry="{StaticResource DeleteFillCircleGeometry}"/>
+                                    hc:IconElement.Geometry="{StaticResource DeleteFillCircleGeometry}"/>-->
+                            <TextBlock Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" 
+                                       Width="40" Height="40"
+                                         HorizontalAlignment="Right" 
+                                         VerticalAlignment="Center" 
+                                         Margin="0 0 -20 0"  />
                         </Grid>
                     </Border>
                 </hc:Drawer>

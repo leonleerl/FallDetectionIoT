@@ -34,7 +34,7 @@ namespace FallDetectionIoT.WebApi.Controllers
 
         // POST api/sensor
         [HttpPost]
-        public async Task<IActionResult> ReceiveSensorData([FromBody] SensorDataModelDto sensorDataDto)
+        public async Task<IActionResult> ReceiveSensorData([FromBody] SensorDataModel sensorDataDto)
         {
             if (sensorDataDto == null)
             {

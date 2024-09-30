@@ -58,6 +58,26 @@ namespace FallDetectionIoT.WPF.ViewModels
             }
         }
 
+        [RelayCommand]
+        private void CheckboxChanged(object param)
+        {
+            SensorDataModelDto? sensorData = param as SensorDataModelDto;
+            if (sensorData != null)
+            {
+                // 在这里处理点击事件，比如获取选中的行数据
+                if (sensorData.IsChecked)
+                {
+                    // 处理选中
+                    Console.WriteLine($"Selected: {sensorData.Name}, Fall Date: {sensorData.FallDate}");
+                }
+                else
+                {
+                    // 处理取消选中
+                    Console.WriteLine($"Deselected: {sensorData.Name}, Fall Date: {sensorData.FallDate}");
+                }
+            }
+        }
+
         [ObservableProperty]
         private ObservableCollection<SensorDataModelDto> _sensorData = new ObservableCollection<SensorDataModelDto>();
 
