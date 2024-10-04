@@ -31,10 +31,11 @@ namespace FallDetectionIoT.WPF.ViewModels
             LoadSensorData();
 
             MapProvider = GoogleMapProvider.Instance;
-            Position = new PointLatLng(-31.9505, 115.8605);  // 例如：珀斯的经纬度
+            Position = new PointLatLng(-31.9505, 115.8605); 
             Zoom = 12;
             Markers = new ObservableCollection<GMapMarker>();
 
+            StartSensorDataFetching();
         }
 
         private async void LoadSensorData()
@@ -45,7 +46,89 @@ namespace FallDetectionIoT.WPF.ViewModels
                 var sensorDataDto = _mapper.Map<SensorDataModelDto>(sensorDataModel);
                 SensorData.Add(sensorDataDto);
             }
+
         }
+
+        private async Task StartSensorDataFetching()
+        {
+            while (true)
+            {
+                try
+                {
+                    // 获取最新的传感器数据
+                    var data = await _sensorDataService.GetAll();
+
+                    // 创建一个新的缓冲区并存储数据
+                    var bufferSensorData = new ObservableCollection<SensorDataModelDto>();
+                    foreach (var sensorDataModel in data)
+                    {
+                        var sensorDataDto = _mapper.Map<SensorDataModelDto>(sensorDataModel);
+                        bufferSensorData.Add(sensorDataDto);
+                    }
+
+                    // 比较两个集合的内容，忽略对象引用
+                    if (!AreCollectionsContentEqual(SensorData, bufferSensorData))
+                    {
+                        Growl.Warning(new GrowlInfo
+                        {
+                            Message = "Fall is Detected!",  // 自定义消息
+                            ShowDateTime = true,
+                            WaitTime = 3,  // 设置显示的时间
+                            IsCustom = true,
+                            StaysOpen = false
+                        });
+
+                        // 更新SensorData为最新的BufferSensorData
+                        SensorData = new ObservableCollection<SensorDataModelDto>(bufferSensorData);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // 处理异常，可能需要提示用户
+                    HandyControl.Controls.MessageBox.Show("Error fetching data: " + ex.Message);
+                }
+
+                // 每次调用后等待1秒
+                await Task.Delay(1000);
+            }
+        }
+
+        // 比较两个集合的内容是否相同，忽略顺序和引用
+        private bool AreCollectionsContentEqual(ObservableCollection<SensorDataModelDto> first, ObservableCollection<SensorDataModelDto> second)
+        {
+            if (first.Count != second.Count)
+                return false;
+
+            // 对两个集合进行排序并逐个比较内容
+            var sortedFirst = first.OrderBy(x => x.FallDate).ToList();
+            var sortedSecond = second.OrderBy(x => x.FallDate).ToList();
+
+            for (int i = 0; i < sortedFirst.Count; i++)
+            {
+                if (!IsSensorDataEqual(sortedFirst[i], sortedSecond[i]))
+                {
+                    return false;  // 只要有任何字段不同，返回false
+                }
+            }
+
+            return true; // 所有字段都相同，返回true
+        }
+
+        // 比较两个SensorDataModelDto对象的字段是否完全相同
+        private bool IsSensorDataEqual(SensorDataModelDto first, SensorDataModelDto second)
+        {
+            return first.Id == second.Id &&
+                   first.Name == second.Name &&
+                   first.FallDate == second.FallDate &&
+                   first.Latitude == second.Latitude &&
+                   first.Longitude == second.Longitude &&
+                   first.accelX == second.accelX &&
+                   first.accelY == second.accelY &&
+                   first.accelZ == second.accelZ;
+        }
+
+
+
 
         [RelayCommand]
         private void ToggleDrawer()
@@ -60,14 +143,6 @@ namespace FallDetectionIoT.WPF.ViewModels
             }
             IsDrawerOpen = !IsDrawerOpen;
 
-            Growl.Warning(new GrowlInfo
-            {
-                Message = "Fall is Detected!",  // 自定义消息
-                ShowDateTime = true,
-                WaitTime = 3,  // 设置显示的时间
-                IsCustom = true,
-                StaysOpen = false
-            });
         }
 
         [RelayCommand]
@@ -85,7 +160,7 @@ namespace FallDetectionIoT.WPF.ViewModels
                 SensorData.Add(sensorDataDto);
             }
         }
-
+        
         [RelayCommand]
         private void CheckboxChanged(SensorDataModelDto sensorDataModelDto)
         {
@@ -182,7 +257,10 @@ namespace FallDetectionIoT.WPF.ViewModels
 
 
         [ObservableProperty]
-        private ObservableCollection<SensorDataModelDto> _sensorData = new ObservableCollection<SensorDataModelDto>();
+        private ObservableCollection<SensorDataModelDto> _sensorData = new();
+
+        [ObservableProperty]
+        private ObservableCollection<SensorDataModelDto> _bufferSensorData = new();
 
 
         [ObservableProperty]
