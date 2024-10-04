@@ -27,14 +27,21 @@
         <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Fill="#EEEEEE"/>
 
 
-        <Button Grid.Row="0" Grid.Column="1" Content="Click" Command="{Binding ToggleDrawerCommand}"/>
+        <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10" Content="Show" Command="{Binding ToggleDrawerCommand}"/>
+        <Button IsEnabled="False" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="70 10 10 10" Content="Clear All" Click="Button_Click_ClearAll"/>
 
 
         <hc:DrawerContainer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
             <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="35*"/>
+                    <ColumnDefinition Width="71*"/>
+                    <ColumnDefinition Width="132*"/>
+                    <ColumnDefinition Width="1162*"/>
+                </Grid.ColumnDefinitions>
                 <hc:Drawer Name="DrawerLeftInContainer" Dock="Left" ShowMode="Push"
                    IsOpen="{Binding IsDrawerOpen}" ShowMask="False" 
-                   Width="{Binding DrawerWidth}"
+                   Width="{Binding DrawerWidth}" Grid.ColumnSpan="4"
                            >
                     <Border Background="{DynamicResource RegionBrush}" BorderBrush="{DynamicResource BorderBrush}" CornerRadius="20">
                         <Grid>
@@ -58,27 +65,19 @@
                                       ItemsSource="{Binding SensorData}">
                                 <DataGrid.RowHeaderTemplate>
                                     <DataTemplate>
-                                        <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" 
-                                                Command="{Binding DataContext.CheckboxChangedCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" 
-                                            CommandParameter="{Binding}"/>
+                                        <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}"
+                  Command="{Binding DataContext.CheckboxChangedCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}, Path=DataContext}"/>
                                     </DataTemplate>
                                 </DataGrid.RowHeaderTemplate>
+
+
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Binding="{Binding Name}" Header="Name"/>
                                     <DataGridTextColumn Binding="{Binding FallDate}" Header="Fall Dates"/>
                                 </DataGrid.Columns>
                             </DataGrid>
 
-
-                            <!--<Button Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" 
-                                    Command="hc:ControlCommands.Close" 
-                                    Width="40" Height="40"
-                                    HorizontalAlignment="Right" 
-                                    VerticalAlignment="Center" 
-                                    Margin="0 0 -20 0" 
-                                Foreground="{DynamicResource PrimaryTextBrush}" 
-                                    Style="{StaticResource ButtonIcon}" 
-                                    hc:IconElement.Geometry="{StaticResource DeleteFillCircleGeometry}"/>-->
                             <TextBlock Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" 
                                        Width="40" Height="40"
                                          HorizontalAlignment="Right" 
@@ -88,10 +87,16 @@
                     </Border>
                 </hc:Drawer>
 
-                <gmap:GMapControl x:Name="gmapControl" 
-                                  VerticalAlignment="Stretch" 
-                                  HorizontalAlignment="Stretch" 
-                                  Zoom="12"/>
+                <!--<gmap:GMapControl x:Name="gmapControl" 
+                                  Zoom="12" Grid.ColumnSpan="4"/>-->
+                <gmap:GMapControl 
+                    x:Name="gmapControl"
+                    Zoom="{Binding Zoom, Mode=TwoWay}"
+                    CenterPosition="{Binding Position, Mode=TwoWay}"
+                    MapProvider="{Binding MapProvider}"
+                    Grid.ColumnSpan="4"
+                    />
+
             </Grid>
         </hc:DrawerContainer>
     </Grid>

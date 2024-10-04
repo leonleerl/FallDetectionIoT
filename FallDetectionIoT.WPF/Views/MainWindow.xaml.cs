@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GMap.NET.WindowsPresentation;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace FallDetectionIoT.WPF.Views
 {
@@ -25,35 +27,43 @@ namespace FallDetectionIoT.WPF.Views
             InitializeComponent();
             this.DataContext = mainWindowViewModel;
 
-            gmapControl.MapProvider = GoogleMapProvider.Instance;
-            gmapControl.Position = new PointLatLng(-31.9505, 115.8605);
+            //gmapControl.MapProvider = GoogleMapProvider.Instance;
+            //gmapControl.Position = new PointLatLng(-31.9505, 115.8605);
             gmapControl.MinZoom = 1;
             gmapControl.MaxZoom = 20;
             gmapControl.Zoom = 12;
             gmapControl.ShowCenter = false;
+            gmapControl.DragButton = MouseButton.Left;
+
+            mainWindowViewModel.Markers.CollectionChanged += OnMarkersCollectionChanged;
         }
 
-        private void AddMarker(double lat, double lng)
+        // 当 Markers 集合发生变化时，更新 gmapControl.Markers
+        private void OnMarkersCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            var marker = new GMapMarker(new PointLatLng(lat, lng))
+            // 清空当前标记
+            gmapControl.Markers.Clear();
+
+            // 重新添加所有标记
+            foreach (var marker in (sender as ObservableCollection<GMapMarker>))
             {
-                Shape = new Ellipse
-                {
-                    Width = 10,
-                    Height = 10,
-                    Stroke = Brushes.Red,
-                    StrokeThickness = 2,
-                    Fill = Brushes.Red
-                }
-            };
-
-            gmapControl.Markers.Add(marker);
+                gmapControl.Markers.Add(marker);
+            }
         }
 
-        public void SendCoordinates(double latitude, double longitude)
+        private void Button_Click_ClearAll(object sender, RoutedEventArgs e)
         {
-            gmapControl.Position = new PointLatLng(latitude, longitude);
-            AddMarker(latitude, longitude);
+            // 获取 ViewModel
+            var viewModel = (MainWindowViewModel)this.DataContext;
+
+            // 清除复选框的选中状态
+            foreach (var sensorData in viewModel.SensorData)
+            {
+                sensorData.IsChecked = false;
+            }
+
+            // 清空所有地图标记
+            viewModel.Markers.Clear();
         }
     }
 }
