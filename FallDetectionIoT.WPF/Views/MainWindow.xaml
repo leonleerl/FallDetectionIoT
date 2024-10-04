@@ -8,9 +8,8 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:gmap="clr-namespace:GMap.NET.WindowsPresentation;assembly=GMap.NET.WindowsPresentation"
         mc:Ignorable="d"
-        Title="MainWindow" Height="850" Width="1400"
+        Title="MainWindow" Height="750" Width="1200"
         Topmost="True"
-        WindowState="Maximized"
         WindowStartupLocation="CenterScreen">
 
     <Grid>
@@ -28,8 +27,6 @@
 
 
         <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10" Content="Show" Command="{Binding ToggleDrawerCommand}"/>
-        <Button IsEnabled="False" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="70 10 10 10" Content="Clear All" Click="Button_Click_ClearAll"/>
-
 
         <hc:DrawerContainer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
             <Grid>

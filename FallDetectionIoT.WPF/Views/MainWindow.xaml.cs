@@ -50,20 +50,5 @@ namespace FallDetectionIoT.WPF.Views
                 gmapControl.Markers.Add(marker);
             }
         }
-
-        private void Button_Click_ClearAll(object sender, RoutedEventArgs e)
-        {
-            // 获取 ViewModel
-            var viewModel = (MainWindowViewModel)this.DataContext;
-
-            // 清除复选框的选中状态
-            foreach (var sensorData in viewModel.SensorData)
-            {
-                sensorData.IsChecked = false;
-            }
-
-            // 清空所有地图标记
-            viewModel.Markers.Clear();
-        }
     }
 }

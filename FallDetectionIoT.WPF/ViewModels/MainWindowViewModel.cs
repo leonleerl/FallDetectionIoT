@@ -14,6 +14,8 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Media.Animation;
+using HandyControl.Controls;
+using HandyControl.Data;
 
 namespace FallDetectionIoT.WPF.ViewModels
 {
@@ -57,11 +59,24 @@ namespace FallDetectionIoT.WPF.ViewModels
                 DrawerWidth = "500";
             }
             IsDrawerOpen = !IsDrawerOpen;
+
+            Growl.Warning(new GrowlInfo
+            {
+                Message = "Fall is Detected!",  // 自定义消息
+                ShowDateTime = true,
+                WaitTime = 3,  // 设置显示的时间
+                IsCustom = true,
+                StaysOpen = false
+            });
         }
 
         [RelayCommand]
         private async Task Search()
         {
+            if (string.IsNullOrEmpty(SearchContent))
+            {
+                Markers.Clear();
+            }
             var results = await _sensorDataService.GetAll(SearchContent);
             SensorData.Clear();
             foreach (var sensorDataModel in results)
@@ -137,7 +152,7 @@ namespace FallDetectionIoT.WPF.ViewModels
                         }
                         else
                         {
-                            MessageBox.Show("Invalid GPS coordinates");
+                            
                         }
                     }
                 }
@@ -165,60 +180,6 @@ namespace FallDetectionIoT.WPF.ViewModels
         }
 
 
-        //[RelayCommand]
-        //private void CheckboxChanged(SensorDataModelDto sensorDataModelDto)
-        //{
-        //    if (sensorDataModelDto.IsChecked == false)
-        //    {
-        //        // 切换 IsChecked 状态
-        //        foreach (var senserData in SensorData)
-        //        {
-        //            if (senserData.Id == sensorDataModelDto.Id)
-        //            {
-        //                senserData.IsChecked = true;
-
-        //                // 用户勾选，向地图添加新标记
-        //                if (double.TryParse(sensorDataModelDto.Latitude, out double latitude) &&
-        //                    double.TryParse(sensorDataModelDto.Longitude, out double longitude))
-        //                {
-        //                    var marker = new GMapMarker(new PointLatLng(latitude, longitude))
-        //                    {
-
-        //                    };
-
-
-
-        //                    Markers.Add(marker);
-        //                }
-        //                else
-        //                {
-        //                    MessageBox.Show("Invalid GPS coordinates");
-        //                }
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        foreach (var senserData in SensorData)
-        //        {
-        //            if (senserData.Id == sensorDataModelDto.Id)
-        //            {
-        //                senserData.IsChecked = false;
-
-        //                // 用户取消勾选，移除地图上的标记
-        //                var markerToRemove = Markers.FirstOrDefault(m =>
-        //                    m.Position.Lat == double.Parse(sensorDataModelDto.Latitude) &&
-        //                    m.Position.Lng == double.Parse(sensorDataModelDto.Longitude));
-
-        //                if (markerToRemove != null)
-        //                {
-        //                    Markers.Remove(markerToRemove);
-        //                }
-        //            }
-        //        }
-
-        //    }
-        //}
 
         [ObservableProperty]
         private ObservableCollection<SensorDataModelDto> _sensorData = new ObservableCollection<SensorDataModelDto>();
