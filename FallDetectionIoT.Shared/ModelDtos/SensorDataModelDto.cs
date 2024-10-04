@@ -5,11 +5,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace FallDetectionIoT.Shared.ModelDtos
 {
-    public class SensorDataModelDto
+    public partial class SensorDataModelDto : ObservableObject
     {
+        public Guid Id { get; set; }
         public string? Name { get; set; }
         public DateTime FallDate { get; set; }
         public string? Longitude { get; set; }
@@ -17,6 +19,7 @@ namespace FallDetectionIoT.Shared.ModelDtos
         public string? accelX { get; set; }
         public string? accelY { get; set; }
         public string? accelZ { get; set; }
-        public bool IsChecked { get; set; }
+        [ObservableProperty]
+        private bool _isChecked;
     }
 }
